@@ -1,0 +1,89 @@
+<html>
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Control My Bot</title>
+  <link rel="stylesheet" href="/stylesheets/style.css">
+
+</head>
+
+<body>
+  <h1>Control bot</h1>
+  <p>You control my bot from my site</p>
+
+<!--  <input type="text" placeholder="just a place to type" id="testInput"/>-->
+
+  <div class="controlUnit">
+    <button type="submit" id="forwardsButton" class="btn_control" onclick="sendKey('w')">&uparrow;</button>
+    <button type="submit" id="leftButton" class="btn_control" onclick="sendKey('a')">&leftarrow;</button>
+    <button type="submit" id="rightButton" class="btn_control" onclick="sendKey('d')">&rightarrow;</button>
+    <button type="submit" id="reverseButton" class="btn_control" onclick="sendKey('s')">&downarrow;</button>
+    <button onclick="sendKey('z')" id="stopKey">Stop</button>
+
+  </div>
+</body>
+<script>
+
+  const socket = new WebSocket(`ws://${location.host}/control/0`);
+  // const testInput = document.getElementById("testInput");
+  //
+  // testInput.onchange = e => {
+  //   e.target.value = "";
+  // }
+
+  socket.addEventListener('open', function (event) {
+    console.log("Socket Opened");
+  });
+  socket.addEventListener("close",() => {
+    console.log("Socket Closed");
+  })
+
+  document.addEventListener("keydown",e => {
+    socket.send(e.key);
+  })
+
+  function sendKey(key) {
+    socket.send(key);
+  }
+
+
+</script>
+<style>
+  .controlUnit{
+    padding: 10px;
+    margin-top: 10px;
+    position: relative;
+
+
+  }
+  .btn_control{
+    width: 30px;
+    height: 30px;
+  }
+  #forwardsButton{
+    position: absolute;
+    left: 40px;
+    top: 0px;
+  }
+  #leftButton{
+    position: absolute;
+    left: 10px;
+    top: 30px;
+  }
+  #rightButton{
+    position: absolute;
+    left: 70px;
+    top: 30px;
+  }
+  #reverseButton{
+    position: absolute;
+    left: 40px;
+    top: 60px;
+  }
+  #stopKey{
+    position: absolute;
+    left: 35px;
+    top: 100px;
+  }
+</style>
+</html>
